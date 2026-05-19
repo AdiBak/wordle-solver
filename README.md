@@ -1,2 +1,2 @@
-# sudoku-solver
+# wordle-solver
 CS 175 Group Project
