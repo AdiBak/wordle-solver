@@ -1,0 +1,1 @@
+# Calls controller.py to run the game
