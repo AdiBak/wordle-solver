@@ -6,26 +6,33 @@ class Guess:
         self.entropy = entropy # Entropy value representing the information gain from making this guess
         self.past_candidates_count = past_candidates_count # Number of candidate words remaining before this guess
 
+
     # Returns whether the guess is a winning guess (all letters are correct).
     def is_win(self) -> bool:
         return self.hints == "GGGGG"
+
 
     # Returns the number of green hints (correct letters in the correct position) in the guess.
     def get_green_count(self) -> int:
         return self.hints.count("G")
 
+
     # Returns the number of yellow hints (correct letters in the wrong position) in the guess.
     def get_yellow_count(self) -> int:
         return self.hints.count("Y")
+
 
     # Returns the assigned entropy value for the guess, which represents the information 
     # gain from making that guess.
     def get_entropy(self) -> float:
         return self.entropy
 
+
     # Returns the number of candidate words remaining before this guess was made.
     def get_past_candidates(self) -> int:
         return self.past_candidates_count
+
+
 
 # Represents the current state of the Wordle game.
 class GameState:
@@ -42,10 +49,10 @@ class GameState:
 
 
     # Checks a word against the target word and returns a string of hints indicating which letters 
-    # are correct (G), present but in the wrong position (Y), or not present (N). Deals with each character
+    # are correct (G), present but in the wrong position (Y), or not present (B). Deals with each character
     # positionally to ensure different combinations of letters are handled correctly.
     def check_word(guess: str, answer: str) -> str:
-        result = ["N"] * 5
+        result = ["B"] * 5
         pool = list(answer)
 
         for i, (g, a) in enumerate(zip(guess, answer)):
@@ -62,18 +69,22 @@ class GameState:
 
         return "".join(result)
 
+
     # Returns the number of attempts made so far in the game.
     def get_attempts(self) -> int:
         return self.attempts
     
+
     # Returns whether the game has been solved (if the last guess was correct).
     def is_solved(self) -> bool:
         return bool(self.past_guesses) and self.past_guesses[-1].is_win()
     
+
     # Returns whether the game has ended (either solved or max attempts reached).
     def is_game_end(self) -> bool:
         return self.is_solved() or self.attempts >= self.max_attempts
     
+
     # Resets the game state to start a new game, optionally with a new target word and candidate list.
     def reset_board(self, target: str | None, candidates: list[str]) -> None:
         self.target = target
@@ -81,6 +92,7 @@ class GameState:
         self.attempts = 0
         self.past_guesses = []
     
+
     # Adds a new guess to the game state, updating the list of past guesses and filtering the candidate 
     # list based on the hints received from the guess.
     def add_guess(self, guess: Guess) -> None:
@@ -89,6 +101,7 @@ class GameState:
 
         if not guess.is_win():
             self.candidates = [c for c in self.candidates if GameState.check_word(guess.word, c) == guess.hints]
+
 
     # Prints the current game state information, including the target word, max attempts, 
     # length of the target word, number of candidates, starter word, and number of past guesses.
