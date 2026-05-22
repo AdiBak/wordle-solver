@@ -17,4 +17,3 @@ class WordleDB:
 
     def get_words(self):
         return self.words
-

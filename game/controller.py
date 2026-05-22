@@ -52,3 +52,5 @@ class GameController:
     # Checks if the game has ended
     def check_end(self) -> bool:
         return self.state.is_game_end()
+
+
