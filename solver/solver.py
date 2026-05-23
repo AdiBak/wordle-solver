@@ -27,6 +27,8 @@ class Solver:
     
     # Makes the guess and updates variables
     def make_guess(self, guess_word: str, hints: str) -> None:
-        return
-    
+        past_candidates_count = len(self.state.candidates)
+        entropy = compute_entropy(guess_word, self.state.candidates)
+        guess = Guess(guess_word, hints, entropy, past_candidates_count)
+        self.state.add_guess(guess)
     

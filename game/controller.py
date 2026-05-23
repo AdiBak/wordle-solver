@@ -31,6 +31,8 @@ class GameController:
     # Runs the main game loop, allowing the player to make guesses until the game is solved or 
     # the maximum number of attempts is reached.
     def run(self) -> GameResult:
+        self.ui.on_game_start(self.state)
+
         while not self.state.is_game_end():
             self.play_turn()
 
@@ -39,15 +41,25 @@ class GameController:
             target = self.state.target,
             guesses = list(self.state.past_guesses),
         )
+        self.ui.on_game_end(result)
         return result
 
-    # TO DO: Handles a single turn of the game.
+    # Plays a turn of the game
     def play_turn(self) -> None:
-        return
+        guess_word = self.solver.next_guess()
+        hints = GameState.check_word(guess_word, self.state.target)
+        self.solver.make_guess(guess_word, hints)
+        self.ui.on_turn(self.state.past_guesses[-1], self.state)
 
-    # TO DO: Resets the game state, solver, and user interface for a new game.
+    # Resets the game state, solver, and UI 
     def reset_game(self, target: str | None = None) -> None:
-        return
+        import random
+
+        if target is None:
+            target = random.choice(self.init_candidates)
+
+        self.state.reset_board(target, list(self.init_candidates))
+        self.ui.on_game_start(self.state)
 
     # Checks if the game has ended
     def check_end(self) -> bool:
