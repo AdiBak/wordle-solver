@@ -1,7 +1,7 @@
 from main import run_one_game
 
-#change depending on which file you use and how many games you want to run and how many games
-NUM_GAMES = 100 
+# change depending on which file you use and how many games you want to run and how many games
+NUM_GAMES = 500 
 
 def main():
     total_guesses = 0
