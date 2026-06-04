@@ -1,7 +1,7 @@
 import math
 from game.state import GameState
 
-# For a given guess, score it against every remaining candidate to get a distribution of feedback patterns, 
+# For a given guess, score it against every remaining candidate to get a distribution of feedback patterns,
 # then compute entropy over that distribution.
 # High entropy = guess splits candidates into many even groups = more information gained.
 def compute_entropy(guess: str, candidates: list[str]) -> float:
@@ -23,3 +23,32 @@ def compute_entropy(guess: str, candidates: list[str]) -> float:
         entropy -= p * math.log2(p)
 
     return entropy
+
+
+# Returns how many positions in a word still have ambiguous letters across remaining candidates.
+# Skips positions already confirmed green, counts positions where the letter appears in some but not all candidates.
+# Used as a tiebreaker in solver.py when entropy scores are too close to make clear guesses.
+def unresolved_check(word: str, candidates: list[str], state) -> int:
+    score = 0
+    n = len(candidates)
+    green_positions = [False, False, False, False, False]
+
+    # Collect positions already confirmed correct from past guesses
+    for past_guess in state.past_guesses:
+        for i, hint in enumerate(past_guess.hints):
+            if hint == "G":
+                green_positions[i] = True
+
+    for i, letter in enumerate(word):
+        if i in green_positions:
+            continue
+
+        # Count how many candidates have this letter at this position
+        matches = sum(1 for c in candidates if c[i] == letter)
+
+        # Only considered good if splits candidates.
+        # If all candidates or no candidates match the letter, less information gain so don't increment score
+        if 0 < matches < n:
+            score += 1
+
+    return score

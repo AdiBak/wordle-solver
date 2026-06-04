@@ -7,12 +7,12 @@ from game.controller import GameController
 from solver.solver import Solver
 from utils.wordleUI import WordleUI
 
-STARTER = "raise"
+STARTER = "slate"
 MAX_ATTEMPTS = 6
 WORD_LENGTH = 5
 
 # Loads the word list, picks a random target, and runs the auto solver.
-def main() -> None:
+def run_one_game():
     words_path = Path(__file__).parent / "utils" / "words.txt"
     db = WordleDB(words_path)
     words = db.get_words()
@@ -25,12 +25,16 @@ def main() -> None:
         candidates = list(words),
         starter = STARTER,
     )
+
     ui = WordleUI()
-    solver = Solver(state)
+    solver = Solver(state, words)
     controller = GameController(state, solver, ui)
 
-    controller.run()
+    return controller.run()
 
+
+def main() -> None:
+    run_one_game()
 
 if __name__ == "__main__":
     main()
