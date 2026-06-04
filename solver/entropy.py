@@ -39,7 +39,8 @@ def unresolved_check(word: str, candidates: list[str], state) -> int:
             if hint == "G":
                 green_positions[i] = True
 
-    for i, letter in enumerate(word):
+    for i, letter in enumerate(word):\
+        # Skip positions already confirmed green since provides no additional information gain
         if i in green_positions:
             continue
 
