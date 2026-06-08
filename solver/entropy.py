@@ -41,7 +41,7 @@ def unresolved_check(word: str, candidates: list[str], state) -> int:
 
     for i, letter in enumerate(word):\
         # Skip positions already confirmed green since provides no additional information gain
-        if i in green_positions:
+        if green_positions[i]:
             continue
 
         # Count how many candidates have this letter at this position

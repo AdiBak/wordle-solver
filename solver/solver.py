@@ -2,8 +2,8 @@
 from solver.entropy import compute_entropy, unresolved_check
 from game.state import Guess
 
-SIMILAR_LIMIT = 6 # Switch to check unresolved letters when candidates drop to this value
-ENTROPY_DIFF = 0.25 # Words within an entropy difference of this value of the best are treated as tied
+SIMILAR_LIMIT = 4 # Switch to check unresolved letters when candidates drop to this value
+ENTROPY_DIFF = 0.10 # Words within an entropy difference of this value of the best are treated as tied
 
 class Solver:
     def __init__(self, state, all_words: list[str]):
